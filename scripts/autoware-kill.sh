@@ -1,0 +1,1 @@
+pgrep -a -f ros | grep -v Microsoft | grep -v ros2_daemon | awk '{ print "kill -9", $1 }' | sh

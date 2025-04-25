@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>959</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>861</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="autoware_tab">
+     <attribute name="title">
+      <string>Autoware Script</string>
+     </attribute>
+     <widget class="QToolBox" name="toolBox">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>811</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_1">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>811</width>
+         <height>149</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Logging Simulator</string>
+       </attribute>
+       <widget class="QCheckBox" name="checkBox_localizaiton">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>110</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>localization</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_perception">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>60</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>perception</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_control">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>110</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>control</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_sensing">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>sensing</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_system">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>110</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>system</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_planning">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>110</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>planning</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_vehicle">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>60</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>vehicle</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_rviz">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>60</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>rviz</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="vehicleModel_gen1">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>112</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BYD J6 Gen1</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="vehicleModel_gen2">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>0</y>
+          <width>112</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BYD J6 Gen2</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="load_map">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>86</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="run_logging_simulator">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>60</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Run</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="stop_logging_simulator">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>110</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Stop</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>811</width>
+         <height>149</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Page 2</string>
+       </attribute>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="others_tab">
+     <attribute name="title">
+      <string>Others</string>
+     </attribute>
+     <widget class="QPushButton" name="startButton">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>230</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>执行脚本</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="scriptList">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>681</width>
+        <height>191</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="stopButton">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>270</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>停止脚本</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QTextEdit" name="outputArea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>450</y>
+      <width>861</width>
+      <height>281</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>959</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

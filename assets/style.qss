@@ -1,0 +1,10 @@
+QMainWindow {
+    background-color: #f4f4f4;
+    font-family: "Microsoft YaHei";
+}
+
+QTextEdit, QTreeWidget {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 4px;
+}
