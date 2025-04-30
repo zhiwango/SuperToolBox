@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>883</width>
-    <height>777</height>
+    <width>881</width>
+    <height>820</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>861</width>
-      <height>441</height>
+      <width>621</width>
+      <height>431</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -33,132 +33,46 @@
      <widget class="QToolBox" name="toolBox">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>30</x>
         <y>10</y>
-        <width>811</width>
-        <height>351</height>
+        <width>571</width>
+        <height>271</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
-      <widget class="QWidget" name="page_1">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>811</width>
-         <height>289</height>
-        </rect>
-       </property>
+      <widget class="QWidget" name="page_0">
        <attribute name="label">
-        <string>Logging Simulator</string>
+        <string>Planning Simulator</string>
        </attribute>
-       <widget class="QCheckBox" name="checkBox_localizaiton">
+       <widget class="QPushButton" name="pushButton_run_planning_simulator">
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>110</y>
-          <width>100</width>
-          <height>30</height>
+          <y>90</y>
+          <width>89</width>
+          <height>25</height>
          </rect>
         </property>
         <property name="text">
-         <string>localization</string>
+         <string>Run</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBox_perception">
+       <widget class="QPushButton" name="pushButton_stop_planning_simulator">
         <property name="geometry">
          <rect>
-          <x>110</x>
-          <y>60</y>
-          <width>100</width>
-          <height>30</height>
+          <x>140</x>
+          <y>90</y>
+          <width>89</width>
+          <height>25</height>
          </rect>
         </property>
         <property name="text">
-         <string>perception</string>
+         <string>Stop</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBox_control">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>110</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>control</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_sensing">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>60</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>sensing</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_system">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>110</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>system</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_planning">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>110</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>planning</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_vehicle">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>60</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>vehicle</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox_rviz">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>60</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>rviz</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton_vehicle_model_gen1">
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen1_psim">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -171,7 +85,160 @@
          <string>BYD J6 Gen1</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioButton_vehicle_model_gen2">
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen2_psim">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>0</y>
+          <width>112</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BYD J6 Gen2</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_map_path_psim">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>40</y>
+          <width>311</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_1">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>571</width>
+         <height>178</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Logging Simulator</string>
+       </attribute>
+       <widget class="QCheckBox" name="checkBox_localizaiton">
+        <property name="geometry">
+         <rect>
+          <x>2</x>
+          <y>103</y>
+          <width>103</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>localization</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_perception">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>72</y>
+          <width>100</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>perception</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_control">
+        <property name="geometry">
+         <rect>
+          <x>202</x>
+          <y>103</y>
+          <width>74</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>control</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_sensing">
+        <property name="geometry">
+         <rect>
+          <x>137</x>
+          <y>72</y>
+          <width>77</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>sensing</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_system">
+        <property name="geometry">
+         <rect>
+          <x>282</x>
+          <y>103</y>
+          <width>73</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>system</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_planning">
+        <property name="geometry">
+         <rect>
+          <x>111</x>
+          <y>103</y>
+          <width>85</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>planning</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_vehicle">
+        <property name="geometry">
+         <rect>
+          <x>58</x>
+          <y>72</y>
+          <width>73</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>vehicle</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_rviz">
+        <property name="geometry">
+         <rect>
+          <x>2</x>
+          <y>72</y>
+          <width>50</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>rviz</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen1_lsim">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>112</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BYD J6 Gen1</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen2_lsim">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -184,7 +251,7 @@
          <string>BYD J6 Gen2</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_map_path">
+       <widget class="QComboBox" name="comboBox_map_path_lsim">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -203,9 +270,9 @@
        <widget class="QPushButton" name="pushButton_run_logging_simulator">
         <property name="geometry">
          <rect>
-          <x>440</x>
-          <y>60</y>
-          <width>89</width>
+          <x>411</x>
+          <y>61</y>
+          <width>80</width>
           <height>25</height>
          </rect>
         </property>
@@ -216,9 +283,9 @@
        <widget class="QPushButton" name="pushButton_stop_logging_simulator">
         <property name="geometry">
          <rect>
-          <x>440</x>
-          <y>110</y>
-          <width>89</width>
+          <x>411</x>
+          <y>92</y>
+          <width>80</width>
           <height>25</height>
          </rect>
         </property>
@@ -232,8 +299,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>811</width>
-         <height>289</height>
+         <width>571</width>
+         <height>178</height>
         </rect>
        </property>
        <attribute name="label">
@@ -242,17 +309,17 @@
        <widget class="QComboBox" name="comboBox_rosbag_path">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>0</x>
           <y>10</y>
           <width>451</width>
           <height>25</height>
          </rect>
         </property>
        </widget>
-       <widget class="QSlider" name="horizontalSlider_rate">
+       <widget class="QSlider" name="horizontalSlider_play_rate">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>0</x>
           <y>50</y>
           <width>160</width>
           <height>16</height>
@@ -265,8 +332,8 @@
        <widget class="QPushButton" name="pushButton_play_rosbag">
         <property name="geometry">
          <rect>
-          <x>540</x>
-          <y>190</y>
+          <x>220</x>
+          <y>120</y>
           <width>89</width>
           <height>25</height>
          </rect>
@@ -278,8 +345,8 @@
        <widget class="QPushButton" name="pushButton_stop_rosbag">
         <property name="geometry">
          <rect>
-          <x>650</x>
-          <y>190</y>
+          <x>350</x>
+          <y>120</y>
           <width>89</width>
           <height>25</height>
          </rect>
@@ -291,9 +358,9 @@
        <widget class="QRadioButton" name="radioButton_for_localization">
         <property name="geometry">
          <rect>
-          <x>30</x>
-          <y>100</y>
-          <width>131</width>
+          <x>215</x>
+          <y>80</y>
+          <width>129</width>
           <height>23</height>
          </rect>
         </property>
@@ -304,9 +371,9 @@
        <widget class="QRadioButton" name="radioButton_for_planning">
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>100</y>
-          <width>112</width>
+          <x>350</x>
+          <y>80</y>
+          <width>107</width>
           <height>23</height>
          </rect>
         </property>
@@ -317,14 +384,40 @@
        <widget class="QRadioButton" name="radioButton_for_perception">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>100</y>
-          <width>121</width>
+          <x>80</x>
+          <y>80</y>
+          <width>122</width>
           <height>23</height>
          </rect>
         </property>
         <property name="text">
          <string>Re-Perception</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_normal">
+        <property name="geometry">
+         <rect>
+          <x>1</x>
+          <y>81</y>
+          <width>76</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_play_rate">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>50</y>
+          <width>67</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
         </property>
        </widget>
       </widget>
@@ -337,7 +430,7 @@
      <widget class="QPushButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>500</x>
         <y>230</y>
         <width>89</width>
         <height>25</height>
@@ -352,7 +445,7 @@
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>681</width>
+        <width>621</width>
         <height>191</height>
        </rect>
       </property>
@@ -360,7 +453,7 @@
      <widget class="QPushButton" name="stopButton">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>500</x>
         <y>270</y>
         <width>89</width>
         <height>25</height>
@@ -375,9 +468,9 @@
    <widget class="QTextEdit" name="outputArea">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>450</y>
-      <width>861</width>
+      <x>0</x>
+      <y>500</y>
+      <width>641</width>
       <height>281</height>
      </rect>
     </property>
@@ -388,7 +481,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>883</width>
+     <width>881</width>
      <height>22</height>
     </rect>
    </property>

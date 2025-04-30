@@ -8,23 +8,41 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import QProcess
 from ui_main import Ui_mainWindow
 from PyQt5.QtWidgets import QFileDialog
-from config.re_localizaiton import re_localization_topics
+from config.re_localization import re_localization_topics
+from config.re_perception import re_perception_topics
+from config.re_planning import re_planning_topics
 
 
-class ScriptRunner(QMainWindow):
+class SuperToolBox(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
-        # Initialization
-        ## main process
+        # setup main process
         self.process_main = QProcess()
         self.process_main.setProcessChannelMode(QProcess.MergedChannels)
         self.process_main.readyReadStandardOutput.connect(self.read_output)
         self.process_main.finished.connect(self.on_process_finished)
-        ## sub process
+        # setup sub process
         self.process_sub = QProcess()
         self.process_sub.setProcessChannelMode(QProcess.MergedChannels)
+
+        ##############################################################################################
+        # Autoware Tab - Planning Simulator
+        ##############################################################################################
+        self.ui.pushButton_run_planning_simulator.clicked.connect(self.run_planning_simulator)
+        self.ui.pushButton_stop_planning_simulator.clicked.connect(self.stop_planning_simulator)
+        self.ui.pushButton_stop_planning_simulator.setEnabled(False)
+        # 设置默认 map 路径
+        psim_map_path = os.path.expanduser("~/load_data/")
+        self.ui.comboBox_map_path_psim.clear()
+        self.ui.comboBox_map_path_psim.addItem(psim_map_path)
+        # 自动加载 load_data 目录下的所有文件夹作为选项
+        for item in os.listdir(psim_map_path):
+            full_psim_map_path = os.path.join(psim_map_path, item)
+            if os.path.isdir(full_psim_map_path):
+                self.ui.comboBox_map_path_psim.addItem(full_psim_map_path)
+        self.ui.comboBox_map_path_psim.setCurrentText(psim_map_path)
 
         ##############################################################################################
         # Autoware Tab - Logging Simulator
@@ -32,20 +50,31 @@ class ScriptRunner(QMainWindow):
         self.ui.pushButton_run_logging_simulator.clicked.connect(self.run_logging_simulator)
         self.ui.pushButton_stop_logging_simulator.clicked.connect(self.stop_logging_simulator)
         self.ui.pushButton_stop_logging_simulator.setEnabled(False)
+        # 设置默认状态为真
+        self.ui.checkBox_sensing.setChecked(True)
+        self.ui.checkBox_vehicle.setChecked(True)
+        self.ui.checkBox_rviz.setChecked(True)
         # 设置默认 map 路径
-        map_path = os.path.expanduser("~/load_data/")
-        self.ui.comboBox_map_path.clear()
-        self.ui.comboBox_map_path.addItem(map_path)
+        lsim_map_path = os.path.expanduser("~/load_data/")
+        self.ui.comboBox_map_path_lsim.clear()
+        self.ui.comboBox_map_path_lsim.addItem(lsim_map_path)
         # 自动加载 load_data 目录下的所有文件夹作为选项
-        for item in os.listdir(map_path):
-            full_map_path = os.path.join(map_path, item)
-            if os.path.isdir(full_map_path):
-                self.ui.comboBox_map_path.addItem(full_map_path)
-        self.ui.comboBox_map_path.setCurrentText(map_path)
+        for item in os.listdir(lsim_map_path):
+            full_lsim_map_path = os.path.join(lsim_map_path, item)
+            if os.path.isdir(full_lsim_map_path):
+                self.ui.comboBox_map_path_lsim.addItem(full_lsim_map_path)
+        self.ui.comboBox_map_path_lsim.setCurrentText(lsim_map_path)
 
         ##############################################################################################
         # Autoware Tab - ROS2 Bag Player
         ##############################################################################################
+        self.ui.horizontalSlider_play_rate.setMinimum(1)
+        self.ui.horizontalSlider_play_rate.setMaximum(10)
+        self.ui.horizontalSlider_play_rate.setSingleStep(1)
+        self.ui.horizontalSlider_play_rate.setValue(10) #初始值为1
+        self.ui.label_play_rate.setText("1.0")
+        self.play_rate = 1.0
+        self.ui.horizontalSlider_play_rate.valueChanged.connect(self.on_slider_changed)
         self.ui.pushButton_play_rosbag.clicked.connect(self.play_rosbag)
         self.ui.pushButton_stop_rosbag.clicked.connect(self.stop_rosbag)
         # 设置默认 rosbag 路径
@@ -72,14 +101,50 @@ class ScriptRunner(QMainWindow):
         self.load_scripts()
         ##############################################################################################
 
-    def run_logging_simulator(self):
-        map_path = self.ui.comboBox_map_path.currentText()
-
+    def run_planning_simulator(self):
+        psim_map_path = self.ui.comboBox_map_path_psim.currentText()
         # 判断选中的车型
-        if self.ui.radioButton_vehicle_model_gen1.isChecked():
+        if self.ui.radioButton_vehicle_model_gen1_psim.isChecked():
             vehicle_model = "j6_gen1"
             sensor_model = "aip_x2"
-        elif self.ui.radioButton_vehicle_model_gen2.isChecked():
+        elif self.ui.radioButton_vehicle_model_gen2_psim.isChecked():
+            vehicle_model = "j6_gen2"
+            sensor_model = "aip_x2_gen2"
+        else:
+            vehicle_model = "default"
+            sensor_model = "default"
+
+        command = [
+            "ros2", "launch", "autoware_launch", "planning_simulator.launch.xml",
+            f"map_path:={psim_map_path}",
+            "lanelet2_map_file:=lanelet2_map.osm", "pointcloud_map_file:=pointcloud_map.pcd",
+            f"vehicle_model:={vehicle_model}",
+            f"sensor_model:={sensor_model}",
+        ]
+        self.ui.outputArea.append("\n执行命令:\n" + " ".join(command))
+        self.process_main.start("bash", ["-c", " ".join(command)])
+        self.ui.pushButton_run_planning_simulator.setEnabled(False)
+        self.ui.pushButton_stop_planning_simulator.setEnabled(True)
+
+    def stop_planning_simulator(self):
+        if self.process_main.state() != QProcess.NotRunning:
+            self.process_main.kill()
+            self.ui.outputArea.append("\n[已停止执行]\n")
+        # 额外终止所有 ros 相关进程
+        cleanup_cmd = "pgrep -a -f ros | grep -v Microsoft | grep -v ros2_daemon | awk '{ print \"kill -9\", $1 }' | sh"
+        os.system(cleanup_cmd)
+        self.ui.outputArea.append("[已强制关闭所有 ROS 相关进程]\n")
+        self.ui.pushButton_run_planning_simulator.setEnabled(True)
+        self.ui.pushButton_stop_planning_simulator.setEnabled(False)
+
+    def run_logging_simulator(self):
+        lsim_map_path = self.ui.comboBox_map_path_lsim.currentText()
+
+        # 判断选中的车型
+        if self.ui.radioButton_vehicle_model_gen1_lsim.isChecked():
+            vehicle_model = "j6_gen1"
+            sensor_model = "aip_x2"
+        elif self.ui.radioButton_vehicle_model_gen2_lsim.isChecked():
             vehicle_model = "j6_gen2"
             sensor_model = "aip_x2_gen2"
         else:
@@ -95,9 +160,8 @@ class ScriptRunner(QMainWindow):
         control = str(self.ui.checkBox_control.isChecked()).lower()
         system = str(self.ui.checkBox_system.isChecked()).lower()
         command = [
-            # f"ros2 launch autoware_launch logging_simulator.launch.xml "
             "ros2", "launch", "autoware_launch", "logging_simulator.launch.xml",
-            f"map_path:={map_path}",
+            f"map_path:={lsim_map_path}",
             "lanelet2_map_file:=lanelet2_map.osm", "pointcloud_map_file:=pointcloud_map.pcd",
             f"vehicle_model:={vehicle_model}",
             f"sensor_model:={sensor_model}",
@@ -126,18 +190,25 @@ class ScriptRunner(QMainWindow):
         self.ui.pushButton_run_logging_simulator.setEnabled(True)
         self.ui.pushButton_stop_logging_simulator.setEnabled(False)
 
+    def on_slider_changed(self, value):
+        self.play_rate = value / 10
+        self.ui.label_play_rate.setText(f"{self.play_rate:.1f}")
+
     def play_rosbag(self):
         rosbag_path = self.ui.comboBox_rosbag_path.currentText()
-        command = ["ros2", "bag", "play", rosbag_path, "--clock", "100", "-s", "sqlite3"]
+        rate = f"{self.play_rate:.1f}"
+        command = ["ros2", "bag", "play", rosbag_path, "--clock", "100", "-s", "sqlite3", "-r", rate]
         # remap_list = self.build_remap_args(rosbag_path)
         # command.extend(remap_list)
         topic_list = []
         if self.ui.radioButton_for_localization.isChecked():
             topic_list = re_localization_topics
         elif self.ui.radioButton_for_perception.isChecked():
-            topic_list = []
+            topic_list = re_perception_topics
         elif self.ui.radioButton_for_planning.isChecked():
-            topic_list = []
+            topic_list = re_planning_topics
+        else:
+            pass
 
         if topic_list:
             command.append("--topics")
@@ -198,6 +269,6 @@ class ScriptRunner(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = ScriptRunner()
+    window = SuperToolBox()
     window.show()
     sys.exit(app.exec_())
