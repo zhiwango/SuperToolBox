@@ -2,19 +2,19 @@
   {
     "name": "打印Hello",
     "type": "python",
-    "path": "/home/zhi/wang_gui_tool/scripts/hello.py",
+    "path": "/home/zhi/SuperToolBox/scripts/hello.py",
     "sudo": false
   },
   {
     "name": "启动模拟器",
     "type": "bash",
-    "path": "/home/zhi/wang_gui_tool/scripts/autoware-planning-simulator.sh",
+    "path": "/home/zhi/SuperToolBox/scripts/autoware-planning-simulator.sh",
     "sudo": false
   },
   {
     "name": "关闭ROS2",
     "type": "bash",
-    "path": "/home/zhi/wang_gui_tool/scripts/autoware-kill.sh",
+    "path": "/home/zhi/SuperToolBox/scripts/autoware-kill.sh",
     "sudo": false
   }
 ]

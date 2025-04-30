@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>959</width>
-    <height>780</height>
+    <width>883</width>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>0</y>
       <width>861</width>
       <height>441</height>
@@ -33,14 +33,14 @@
      <widget class="QToolBox" name="toolBox">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>20</y>
+        <x>10</x>
+        <y>10</y>
         <width>811</width>
-        <height>211</height>
+        <height>351</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_1">
        <property name="geometry">
@@ -48,7 +48,7 @@
          <x>0</x>
          <y>0</y>
          <width>811</width>
-         <height>149</height>
+         <height>289</height>
         </rect>
        </property>
        <attribute name="label">
@@ -158,7 +158,7 @@
          <string>rviz</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="vehicleModel_gen1">
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen1">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -171,7 +171,7 @@
          <string>BYD J6 Gen1</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="vehicleModel_gen2">
+       <widget class="QRadioButton" name="radioButton_vehicle_model_gen2">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -184,7 +184,7 @@
          <string>BYD J6 Gen2</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="load_map">
+       <widget class="QComboBox" name="comboBox_map_path">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -200,7 +200,7 @@
          <enum>QComboBox::AdjustToContents</enum>
         </property>
        </widget>
-       <widget class="QPushButton" name="run_logging_simulator">
+       <widget class="QPushButton" name="pushButton_run_logging_simulator">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -213,7 +213,7 @@
          <string>Run</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="stop_logging_simulator">
+       <widget class="QPushButton" name="pushButton_stop_logging_simulator">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -233,12 +233,100 @@
          <x>0</x>
          <y>0</y>
          <width>811</width>
-         <height>149</height>
+         <height>289</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 2</string>
+        <string>ROS2 Bag Player</string>
        </attribute>
+       <widget class="QComboBox" name="comboBox_rosbag_path">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>10</y>
+          <width>451</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QSlider" name="horizontalSlider_rate">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>50</y>
+          <width>160</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_play_rosbag">
+        <property name="geometry">
+         <rect>
+          <x>540</x>
+          <y>190</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Play</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_stop_rosbag">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>190</y>
+          <width>89</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Stop</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_for_localization">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>100</y>
+          <width>131</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Re-Localization</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_for_planning">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>100</y>
+          <width>112</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Re-Planning</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_for_perception">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>100</y>
+          <width>121</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Re-Perception</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -287,7 +375,7 @@
    <widget class="QTextEdit" name="outputArea">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>450</y>
       <width>861</width>
       <height>281</height>
@@ -300,7 +388,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>959</width>
+     <width>883</width>
      <height>22</height>
     </rect>
    </property>
