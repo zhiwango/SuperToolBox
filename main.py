@@ -2,6 +2,7 @@ import sys
 import json
 import os
 import subprocess
+import signal
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QMainWindow, QMessageBox, QListWidget, QListWidgetItem,
 )
@@ -11,13 +12,19 @@ from PyQt5.QtWidgets import QFileDialog
 from config.re_localization import re_localization_topics
 from config.re_perception import re_perception_topics
 from config.re_planning import re_planning_topics
-
+import rclpy
+from rclpy.node import Node
+from rosbag2_interfaces.srv import (Pause, Resume, SetRate)
 
 class SuperToolBox(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
+
+        rclpy.init()
+        self.rosbag_controller = RosbagController(self.ui)
+
         # setup main process
         self.process_main = QProcess()
         self.process_main.setProcessChannelMode(QProcess.MergedChannels)
@@ -64,7 +71,6 @@ class SuperToolBox(QMainWindow):
             if os.path.isdir(full_lsim_map_path):
                 self.ui.comboBox_map_path_lsim.addItem(full_lsim_map_path)
         self.ui.comboBox_map_path_lsim.setCurrentText(lsim_map_path)
-
         ##############################################################################################
         # Autoware Tab - ROS2 Bag Player
         ##############################################################################################
@@ -73,16 +79,17 @@ class SuperToolBox(QMainWindow):
         self.ui.horizontalSlider_play_rate.setSingleStep(1)
         self.ui.horizontalSlider_play_rate.setValue(10) #初始值为1
         self.ui.label_play_rate.setText("1.0")
-        self.play_rate = 1.0
-        self.ui.horizontalSlider_play_rate.valueChanged.connect(self.on_slider_changed)
+        self.ui.horizontalSlider_play_rate.valueChanged.connect(self.rosbag_controller.on_slider_changed)
+        self.ui.pushButton_pause_rosbag.clicked.connect(self.rosbag_controller.pause_rosbag)
+        self.ui.pushButton_resume_rosbag.clicked.connect(self.rosbag_controller.resume_rosbag)
         self.ui.pushButton_play_rosbag.clicked.connect(self.play_rosbag)
         self.ui.pushButton_stop_rosbag.clicked.connect(self.stop_rosbag)
+
         # 设置默认 rosbag 路径
         rosbag_path = os.path.expanduser("~/rosbag/")
         self.ui.comboBox_rosbag_path.clear()
         self.ui.comboBox_rosbag_path.addItem(rosbag_path)
         # 自动加载 rosbag 目录下的所有 .db3 文件作为选项
-
         for root, dirs, files in os.walk(rosbag_path):
             for file in files:
                 if file.endswith(".db3"):
@@ -190,16 +197,15 @@ class SuperToolBox(QMainWindow):
         self.ui.pushButton_run_logging_simulator.setEnabled(True)
         self.ui.pushButton_stop_logging_simulator.setEnabled(False)
 
-    def on_slider_changed(self, value):
-        self.play_rate = value / 10
-        self.ui.label_play_rate.setText(f"{self.play_rate:.1f}")
+    def stop_rosbag(self):
+        if self.process_sub.state() == QProcess.Running:
+            self.process_sub.kill()
+            self.ui.outputArea.append("脚本已被终止。\n")
+            self.ui.stopButton.setEnabled(False)
 
     def play_rosbag(self):
         rosbag_path = self.ui.comboBox_rosbag_path.currentText()
-        rate = f"{self.play_rate:.1f}"
-        command = ["ros2", "bag", "play", rosbag_path, "--clock", "100", "-s", "sqlite3", "-r", rate]
-        # remap_list = self.build_remap_args(rosbag_path)
-        # command.extend(remap_list)
+        command = ["ros2", "bag", "play", rosbag_path, "--clock", "100", "-s", "sqlite3", "-r", "1.0"]
         topic_list = []
         if self.ui.radioButton_for_localization.isChecked():
             topic_list = re_localization_topics
@@ -217,14 +223,6 @@ class SuperToolBox(QMainWindow):
         command_str = " ".join(command)
         self.ui.outputArea.append("\n执行命令:\n" + command_str)
         self.process_sub.start("bash", ["-c", command_str])
-
-    def stop_rosbag(self):
-        if self.process_sub.state() == QProcess.Running:
-            self.process_sub.kill()
-            self.ui.outputArea.append("脚本已被终止。\n")
-            self.ui.stopButton.setEnabled(False)
-
-    # TODO: pause rosbag play
 
     def load_scripts(self):
         try:
@@ -266,6 +264,29 @@ class SuperToolBox(QMainWindow):
         output = self.process_main.readAllStandardOutput().data().decode()
         self.ui.outputArea.append(output)
 
+class RosbagController(Node):
+    def __init__(self, ui):
+        super().__init__("rosbag_controller")
+        self.ui = ui
+        self.pause_client = self.create_client(Pause,"/rosbag2_player/pause")
+        self.resume_client = self.create_client(Resume, '/rosbag2_player/resume')
+        self.rate_client = self.create_client(SetRate, '/rosbag2_player/set_rate')
+    def pause_rosbag(self):
+        future = self.pause_client.call_async(Pause.Request())
+        rclpy.spin_until_future_complete(self, future)
+    def resume_rosbag(self):
+        future = self.resume_client.call_async(Resume.Request())
+        rclpy.spin_until_future_complete(self, future)
+    def on_slider_changed(self, value):
+        play_rate = value / 10
+        self.ui.label_play_rate.setText(f"{play_rate:.1f}")
+        if play_rate > 0:
+            self.set_rate(play_rate)
+    def set_rate(self, rate: float):
+        request = SetRate.Request()
+        request.rate = rate
+        future = self.rate_client.call_async(request)
+        rclpy.spin_until_future_complete(self, future)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
