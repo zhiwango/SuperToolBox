@@ -273,10 +273,10 @@ class RosbagController(Node):
         self.rate_client = self.create_client(SetRate, '/rosbag2_player/set_rate')
     def pause_rosbag(self):
         future = self.pause_client.call_async(Pause.Request())
-        rclpy.spin_until_future_complete(self, future)
+        future.result()
     def resume_rosbag(self):
         future = self.resume_client.call_async(Resume.Request())
-        rclpy.spin_until_future_complete(self, future)
+        future.result()
     def on_slider_changed(self, value):
         play_rate = value / 10
         self.ui.label_play_rate.setText(f"{play_rate:.1f}")
@@ -286,7 +286,7 @@ class RosbagController(Node):
         request = SetRate.Request()
         request.rate = rate
         future = self.rate_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
+        future.result()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
