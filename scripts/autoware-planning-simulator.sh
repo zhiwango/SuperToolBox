@@ -1,1 +1,0 @@
-ros2 launch autoware_launch planning_simulator.launch.xml map_path:=/home/zhi/load_data/fukaya lanelet2_map_file:=lanelet2_map.osm pointcloud_map_file:=pointcloud_map.pcd vehicle_model:="j6_gen2" sensor_model:="aip_x2_gen2" "$@" 2>&1 | tee "$SCRIPT_DIR"/autoware.log

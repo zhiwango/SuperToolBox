@@ -21,10 +21,8 @@ class SuperToolBox(QMainWindow):
         super().__init__()
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
-
         rclpy.init()
         self.rosbag_controller = RosbagController(self.ui)
-
         # setup main process
         self.process_main = QProcess()
         self.process_main.setProcessChannelMode(QProcess.MergedChannels)
@@ -33,7 +31,6 @@ class SuperToolBox(QMainWindow):
         # setup sub process
         self.process_sub = QProcess()
         self.process_sub.setProcessChannelMode(QProcess.MergedChannels)
-
         ##############################################################################################
         # Autoware Tab - Planning Simulator
         ##############################################################################################
@@ -50,7 +47,6 @@ class SuperToolBox(QMainWindow):
             if os.path.isdir(full_psim_map_path):
                 self.ui.comboBox_map_path_psim.addItem(full_psim_map_path)
         self.ui.comboBox_map_path_psim.setCurrentText(psim_map_path)
-
         ##############################################################################################
         # Autoware Tab - Logging Simulator
         ##############################################################################################
@@ -84,7 +80,7 @@ class SuperToolBox(QMainWindow):
         self.ui.pushButton_resume_rosbag.clicked.connect(self.rosbag_controller.resume_rosbag)
         self.ui.pushButton_play_rosbag.clicked.connect(self.play_rosbag)
         self.ui.pushButton_stop_rosbag.clicked.connect(self.stop_rosbag)
-
+        self.ui.radioButton_normal.setChecked(True)
         # 设置默认 rosbag 路径
         rosbag_path = os.path.expanduser("~/rosbag/")
         self.ui.comboBox_rosbag_path.clear()
@@ -96,7 +92,10 @@ class SuperToolBox(QMainWindow):
                     full_path = os.path.join(root, file)
                     self.ui.comboBox_rosbag_path.addItem(full_path)
         self.ui.comboBox_rosbag_path.setCurrentText(rosbag_path)
-
+        ##############################################################################################
+        # Dev Tab
+        ##############################################################################################
+        self.ui.commandLinkButton_cleanup_ros2.clicked.connect(self.cleanup_ros2)
         ##############################################################################################
         # Others Tab
         ##############################################################################################
@@ -223,6 +222,10 @@ class SuperToolBox(QMainWindow):
         command_str = " ".join(command)
         self.ui.outputArea.append("\n执行命令:\n" + command_str)
         self.process_sub.start("bash", ["-c", command_str])
+
+    def cleanup_ros2(self):
+        cleanup_cmd = "pgrep -a -f ros | grep -v Microsoft | grep -v ros2_daemon | awk '{ print \"kill -9\", $1 }' | sh"
+        os.system(cleanup_cmd)
 
     def load_scripts(self):
         try:
